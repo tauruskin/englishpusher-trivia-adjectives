@@ -44,7 +44,7 @@ function generateQuestions(count: number): Question[] {
   });
 }
 
-export function useGame(questionCount = 10) {
+export function useGame(questionCount = 20) {
   const [questions, setQuestions] = useState<Question[]>(() => generateQuestions(questionCount));
   const [currentIndex, setCurrentIndex] = useState(0);
   const [score, setScore] = useState(0);
