@@ -81,7 +81,7 @@ const Index = () => {
             <a href="https://www.englishpusher.in.ua/" target="_blank" rel="noopener noreferrer">
               <img
                 src={`${import.meta.env.BASE_URL}logo.png`}
-                alt="EnglishPusher Logo"
+                alt="Englishpusher Logo"
                 className="h-10 w-auto"
               />
             </a>
