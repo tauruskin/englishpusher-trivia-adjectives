@@ -75,9 +75,11 @@ interface MatchingCardProps {
   question: Question;
   transitioning: boolean;
   onSubmit: (answer: string) => void;
+  speak: (word: string) => void;
+  speakIfInteracted: (word: string) => void;
 }
 
-const MatchingCard = ({ question, transitioning, onSubmit }: MatchingCardProps) => {
+const MatchingCard = ({ question, transitioning, onSubmit, speak }: MatchingCardProps) => {
   const words = question.words!;
 
   const [shuffledTranslations] = useState(() =>
