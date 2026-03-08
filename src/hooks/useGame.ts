@@ -137,18 +137,46 @@ function generateQuestions(pool: WordEntry[]): Question[] {
 
 export function useGame(customPool?: WordEntry[]) {
   const pool = customPool ?? wordList;
-  const [questions, setQuestions] = useState<Question[]>(() => generateQuestions(pool));
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [score, setScore] = useState(0);
+
+  const [questions, setQuestions] = useState<Question[]>(() => {
+    if (!customPool) {
+      const saved = loadProgress();
+      if (saved) return saved.questions;
+    }
+    return generateQuestions(pool);
+  });
+  const [currentIndex, setCurrentIndex] = useState(() => {
+    if (!customPool) { const s = loadProgress(); if (s) return s.currentIndex; }
+    return 0;
+  });
+  const [score, setScore] = useState(() => {
+    if (!customPool) { const s = loadProgress(); if (s) return s.score; }
+    return 0;
+  });
   const [answered, setAnswered] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [gameOver, setGameOver] = useState(false);
-  const [streak, setStreak] = useState(0);
+  const [streak, setStreak] = useState(() => {
+    if (!customPool) { const s = loadProgress(); if (s) return s.streak; }
+    return 0;
+  });
   const [transitioning, setTransitioning] = useState(false);
-  const [results, setResults] = useState<AnswerResult[]>([]);
+  const [results, setResults] = useState<AnswerResult[]>(() => {
+    if (!customPool) { const s = loadProgress(); if (s) return s.results; }
+    return [];
+  });
 
   const currentQuestion = questions[currentIndex] ?? null;
+
+  // Save progress whenever relevant state changes
+  useEffect(() => {
+    if (gameOver) {
+      clearProgress();
+    } else if (questions.length > 0 && !customPool) {
+      saveProgress({ questions, currentIndex, score, streak, results });
+    }
+  }, [questions, currentIndex, score, streak, results, gameOver, customPool]);
 
   const submitAnswer = useCallback(
     (answer: string) => {
@@ -166,7 +194,6 @@ export function useGame(customPool?: WordEntry[]) {
 
       // Record results for each word in the question
       if (currentQuestion.type === "matching" && currentQuestion.words) {
-        // For matching, all words count as correct (since submitAnswer is only called on success)
         setResults((prev) => [
           ...prev,
           ...currentQuestion.words!.map((w) => ({
@@ -209,6 +236,7 @@ export function useGame(customPool?: WordEntry[]) {
   );
 
   const restart = useCallback((newPool?: WordEntry[]) => {
+    clearProgress();
     const p = newPool ?? pool;
     setQuestions(generateQuestions(p));
     setCurrentIndex(0);
