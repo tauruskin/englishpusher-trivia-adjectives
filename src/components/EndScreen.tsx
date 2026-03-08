@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import confetti from "canvas-confetti";
+import GameCharacter, { CharacterPose } from "@/components/GameCharacter";
 
 interface EndScreenProps {
   score: number;
