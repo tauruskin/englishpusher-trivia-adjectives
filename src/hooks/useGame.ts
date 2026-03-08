@@ -1,14 +1,24 @@
 import { useState, useCallback } from "react";
-import wordList, { WordEntry } from "@/data/wordList";
+import wordList, { WordEntry, enabledQuestionTypes } from "@/data/wordList";
 
-export type QuestionType = "en-to-native" | "native-to-en" | "fill-blank";
+export type QuestionType = "en-to-native" | "native-to-en" | "fill-blank" | "true-false" | "matching";
 
 export interface Question {
   type: QuestionType;
   word: WordEntry;
+  words?: WordEntry[];          // for matching (5 words)
   options?: string[];
   correctAnswer: string;
+  shownTranslation?: string;    // for true-false
 }
+
+const configToType: Record<string, QuestionType> = {
+  multipleChoice: "en-to-native",
+  reversed: "native-to-en",
+  fillBlank: "fill-blank",
+  trueOrFalse: "true-false",
+  matching: "matching",
+};
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
@@ -19,29 +29,64 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
+function buildSingleQuestion(word: WordEntry, type: QuestionType): Question {
+  if (type === "fill-blank") {
+    return { type, word, correctAnswer: word.word };
+  }
+
+  if (type === "true-false") {
+    const isTrue = Math.random() < 0.5;
+    const shownTranslation = isTrue
+      ? word.translation
+      : shuffle(wordList.filter((w) => w.word !== word.word))[0].translation;
+    return { type, word, correctAnswer: isTrue ? "true" : "false", shownTranslation };
+  }
+
+  const others = wordList.filter((w) => w.word !== word.word);
+  const wrongOnes = shuffle(others).slice(0, 3);
+
+  if (type === "en-to-native") {
+    const options = shuffle([word.translation, ...wrongOnes.map((w) => w.translation)]);
+    return { type, word, options, correctAnswer: word.translation };
+  } else {
+    // native-to-en
+    const options = shuffle([word.word, ...wrongOnes.map((w) => w.word)]);
+    return { type, word, options, correctAnswer: word.word };
+  }
+}
+
 function generateQuestions(count: number): Question[] {
-  const shuffled = shuffle(wordList);
-  const selected = shuffled.slice(0, Math.min(count, shuffled.length));
+  const enabledTypes = enabledQuestionTypes.map((t) => configToType[t]).filter(Boolean);
+  const singleTypes = enabledTypes.filter((t) => t !== "matching");
+  const matchingEnabled = enabledTypes.includes("matching");
 
-  return selected.map((word) => {
-    const types: QuestionType[] = ["en-to-native", "native-to-en", "fill-blank"];
-    const type = types[Math.floor(Math.random() * types.length)];
+  const shuffled = shuffle(wordList).slice(0, Math.min(count, wordList.length));
+  const questions: Question[] = [];
+  let i = 0;
 
-    if (type === "fill-blank") {
-      return { type, word, correctAnswer: word.word };
-    }
-
-    const others = wordList.filter((w) => w.word !== word.word);
-    const wrongOnes = shuffle(others).slice(0, 3);
-
-    if (type === "en-to-native") {
-      const options = shuffle([word.translation, ...wrongOnes.map((w) => w.translation)]);
-      return { type, word, options, correctAnswer: word.translation };
+  while (i < shuffled.length) {
+    // ~20% chance of matching if enabled and ≥5 words remain
+    if (matchingEnabled && shuffled.length - i >= 5 && Math.random() < 0.2) {
+      const matchWords = shuffled.slice(i, i + 5);
+      questions.push({
+        type: "matching",
+        word: matchWords[0],
+        words: matchWords,
+        correctAnswer: "matched",
+      });
+      i += 5;
     } else {
-      const options = shuffle([word.word, ...wrongOnes.map((w) => w.word)]);
-      return { type, word, options, correctAnswer: word.word };
+      const word = shuffled[i];
+      const type =
+        singleTypes.length > 0
+          ? singleTypes[Math.floor(Math.random() * singleTypes.length)]
+          : "en-to-native";
+      questions.push(buildSingleQuestion(word, type));
+      i++;
     }
-  });
+  }
+
+  return questions;
 }
 
 export function useGame(questionCount = wordList.length) {
@@ -71,11 +116,14 @@ export function useGame(questionCount = wordList.length) {
         setStreak(0);
       }
 
-      // Determine delay based on question type and correctness
+      // Matching handles its own celebration internally — short delay
+      const isMatching = currentQuestion.type === "matching";
       const isFillBlank = currentQuestion.type === "fill-blank";
-      const feedbackDelay = isFillBlank
-        ? correct ? 2000 : 4000  // fill-blank: 2s correct, 4s wrong (1s wrong + 3s corrected)
-        : 1000; // multiple choice: 1s
+      const feedbackDelay = isMatching
+        ? 300
+        : isFillBlank
+          ? correct ? 2000 : 4000
+          : 1000;
 
       setTimeout(() => {
         setTransitioning(true);

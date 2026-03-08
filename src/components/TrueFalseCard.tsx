@@ -1,0 +1,108 @@
+import { Question } from "@/hooks/useGame";
+import GameCharacter, { CharacterPose } from "@/components/GameCharacter";
+
+interface TrueFalseCardProps {
+  question: Question;
+  answered: boolean;
+  selectedAnswer: string | null;
+  isCorrect: boolean | null;
+  streak: number;
+  transitioning: boolean;
+  onSubmit: (answer: string) => void;
+}
+
+const TrueFalseCard = ({
+  question,
+  answered,
+  selectedAnswer,
+  isCorrect,
+  streak,
+  transitioning,
+  onSubmit,
+}: TrueFalseCardProps) => {
+  const characterPose: CharacterPose = !answered ? "thinking" : isCorrect ? "happy" : "sad";
+
+  const getBtnStyle = (value: string) => {
+    if (!answered) {
+      return "bg-secondary hover:bg-muted border-border hover:border-primary/50 text-foreground hover:scale-[1.02] active:scale-[0.98]";
+    }
+    if (value === question.correctAnswer) {
+      return "bg-success/20 border-success text-success animate-bounce-once";
+    }
+    if (value === selectedAnswer && !isCorrect) {
+      return "bg-destructive/20 border-destructive text-destructive animate-shake";
+    }
+    return "bg-secondary border-border text-muted-foreground opacity-50";
+  };
+
+  return (
+    <div className="flex items-center gap-6 w-full">
+      <GameCharacter pose={characterPose} className="flex-shrink-0" />
+      <div
+        className={`flex-1 w-full max-w-lg mx-auto space-y-6 bg-card rounded-2xl p-8 border border-border shadow-md relative overflow-hidden transition-all duration-300 ${
+          transitioning ? "opacity-0 translate-y-4" : "opacity-100 translate-y-0 animate-slide-up"
+        }`}
+      >
+        {/* Reaction emoji */}
+        {answered && isCorrect !== null && (
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+            <span className={`text-7xl ${isCorrect ? "animate-emoji-correct" : "animate-emoji-wrong"}`}>
+              {isCorrect ? "🎉" : "😬"}
+            </span>
+          </div>
+        )}
+
+        {/* Streak badge */}
+        {streak >= 2 && (
+          <div
+            className={`absolute -top-1 -right-1 bg-primary text-primary-foreground px-3 py-1 rounded-bl-xl rounded-tr-2xl font-display text-sm font-bold ${
+              streak >= 3 ? "animate-pulse" : ""
+            }`}
+          >
+            🔥 {streak} in a row!
+          </div>
+        )}
+
+        {/* Type label */}
+        <div className="flex justify-center">
+          <span className="text-xs uppercase tracking-widest text-accent font-display font-semibold">
+            True or False
+          </span>
+        </div>
+
+        {/* Prompt */}
+        <p className="text-muted-foreground text-center text-sm">
+          Does this translation match the word?
+        </p>
+
+        {/* English word */}
+        <div className="text-center">
+          <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground">
+            {question.word.word}
+          </h2>
+          <p className="text-lg text-muted-foreground mt-2">= {question.shownTranslation}</p>
+        </div>
+
+        {/* True / False buttons */}
+        <div className="grid grid-cols-2 gap-3">
+          <button
+            onClick={() => !answered && onSubmit("true")}
+            disabled={answered}
+            className={`w-full px-5 py-4 rounded-lg border-2 font-display font-bold text-lg transition-all duration-200 ${getBtnStyle("true")}`}
+          >
+            ✅ True
+          </button>
+          <button
+            onClick={() => !answered && onSubmit("false")}
+            disabled={answered}
+            className={`w-full px-5 py-4 rounded-lg border-2 font-display font-bold text-lg transition-all duration-200 ${getBtnStyle("false")}`}
+          >
+            ❌ False
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default TrueFalseCard;

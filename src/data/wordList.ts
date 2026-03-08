@@ -11,6 +11,24 @@ export interface WordEntry {
   example: string;
 }
 
+export type EnabledQuestionType = 'multipleChoice' | 'reversed' | 'fillBlank' | 'trueOrFalse' | 'matching';
+
+/**
+ * Toggle question types on/off per lesson.
+ * - multipleChoice: English word → pick Ukrainian translation
+ * - reversed: Ukrainian translation → pick English word
+ * - fillBlank: Fill in the blank in an example sentence
+ * - trueOrFalse: Is this English–Ukrainian pair correct?
+ * - matching: Drag-and-drop 5 English words to their Ukrainian translations
+ */
+export const enabledQuestionTypes: EnabledQuestionType[] = [
+  'multipleChoice',
+  'reversed',
+  'fillBlank',
+  'trueOrFalse',
+  'matching',
+];
+
 const wordList: WordEntry[] = [
   { word: "bored", translation: "нудьгуючий", example: "I'm so ___ — there's nothing to do today." },
   { word: "boring", translation: "нудний", example: "The lecture was incredibly ___ and I almost fell asleep." },
