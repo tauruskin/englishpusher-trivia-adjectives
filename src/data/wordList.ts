@@ -1,5 +1,5 @@
 /**
- * EnglishPusher Trivia — Word List Config
+ * Englishpusher Trivia — Word List Config
  * Topic: Adjectives for Feelings (-ed / -ing adjectives)
  * 
  * Edit this file to swap vocabulary for different lessons.

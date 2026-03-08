@@ -81,13 +81,13 @@ const Index = () => {
             <a href="https://www.englishpusher.in.ua/" target="_blank" rel="noopener noreferrer">
               <img
                 src={`${import.meta.env.BASE_URL}logo.png`}
-                alt="EnglishPusher Logo"
+                alt="Englishpusher Logo"
                 className="h-10 w-auto"
               />
             </a>
             <div>
               <h1 className="font-display text-lg font-bold text-foreground tracking-tight">
-                EnglishPusher<span className="text-primary"> Trivia</span>
+                Englishpusher<span className="text-primary"> Trivia</span>
               </h1>
               <a
                 href="https://www.englishpusher.in.ua/"
@@ -95,7 +95,7 @@ const Index = () => {
                 rel="noopener noreferrer"
                 className="text-xs text-muted-foreground hover:text-primary transition-colors"
               >
-                🌐 EnglishPusher.in.ua
+                🌐 Englishpusher.in.ua
               </a>
             </div>
           </div>
@@ -150,7 +150,7 @@ const Index = () => {
             rel="noopener noreferrer"
             className="hover:text-primary transition-colors"
           >
-            Visit EnglishPusher.in.ua →
+            Visit Englishpusher.in.ua →
           </a>
         </div>
       </footer>
