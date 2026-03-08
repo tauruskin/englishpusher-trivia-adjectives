@@ -29,6 +29,14 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Verify build output
+        run: |
+          test -f ./dist/index.html || (echo "ERROR: dist/index.html not found, build may have failed" && exit 1)
+          echo "Build output contents:"
+          ls -la ./dist/
+          echo "--- dist/index.html ---"
+          head -20 ./dist/index.html
+
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4
         with:
