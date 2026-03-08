@@ -22,10 +22,19 @@ const Index = () => {
               <h1 className="font-display text-lg font-bold text-foreground tracking-tight">
                 EnglishPusher<span className="text-primary"> Trivia</span>
               </h1>
-              <p className="text-xs text-muted-foreground">Adjectives for Feelings</p>
+              <p className="text-xs text-muted-foreground">Test your English vocabulary! 🚀</p>
             </div>
           </div>
-          {!game.gameOver && <ScoreBadge score={game.score} total={game.currentIndex + (game.answered ? 1 : 0)} />}
+          {!game.gameOver && (
+            <div className="flex items-center gap-3">
+              {game.streak >= 3 && (
+                <span className="text-sm font-display font-bold text-primary animate-pulse">
+                  🔥 {game.streak}
+                </span>
+              )}
+              <ScoreBadge score={game.score} total={game.currentIndex + (game.answered ? 1 : 0)} />
+            </div>
+          )}
         </div>
       </header>
 
@@ -44,6 +53,8 @@ const Index = () => {
                   answered={game.answered}
                   selectedAnswer={game.selectedAnswer}
                   isCorrect={game.isCorrect}
+                  streak={game.streak}
+                  transitioning={game.transitioning}
                   onSubmit={game.submitAnswer}
                 />
               )}

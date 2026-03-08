@@ -6,38 +6,34 @@ interface QuestionCardProps {
   answered: boolean;
   selectedAnswer: string | null;
   isCorrect: boolean | null;
+  streak: number;
+  transitioning: boolean;
   onSubmit: (answer: string) => void;
 }
 
-const QuestionCard = ({ question, answered, selectedAnswer, isCorrect, onSubmit }: QuestionCardProps) => {
+const QuestionCard = ({ question, answered, selectedAnswer, isCorrect, streak, transitioning, onSubmit }: QuestionCardProps) => {
   const [inputValue, setInputValue] = useState("");
 
   const getPrompt = () => {
     switch (question.type) {
-      case "en-to-native":
-        return "What does this word mean?";
-      case "native-to-en":
-        return "Which English word matches?";
-      case "fill-blank":
-        return "Fill in the blank:";
+      case "en-to-native": return "What does this word mean?";
+      case "native-to-en": return "Which English word matches?";
+      case "fill-blank": return "Fill in the blank:";
     }
   };
 
   const getDisplayWord = () => {
     switch (question.type) {
-      case "en-to-native":
-        return question.word.word;
-      case "native-to-en":
-        return question.word.translation;
-      case "fill-blank":
-        return question.word.example;
+      case "en-to-native": return question.word.word;
+      case "native-to-en": return question.word.translation;
+      case "fill-blank": return question.word.example;
     }
   };
 
   const getOptionStyle = (option: string) => {
-    if (!answered) return "bg-secondary hover:bg-muted border-border hover:border-primary/50 text-foreground";
-    if (option === question.correctAnswer) return "bg-success/20 border-success text-success";
-    if (option === selectedAnswer && !isCorrect) return "bg-destructive/20 border-destructive text-destructive";
+    if (!answered) return "bg-secondary hover:bg-muted border-border hover:border-primary/50 text-foreground hover:scale-[1.02] active:scale-[0.98]";
+    if (option === question.correctAnswer) return "bg-success/20 border-success text-success animate-bounce-once";
+    if (option === selectedAnswer && !isCorrect) return "bg-destructive/20 border-destructive text-destructive animate-shake";
     return "bg-secondary border-border text-muted-foreground opacity-50";
   };
 
@@ -49,7 +45,23 @@ const QuestionCard = ({ question, answered, selectedAnswer, isCorrect, onSubmit 
   };
 
   return (
-    <div className="w-full max-w-lg mx-auto space-y-6 animate-in fade-in duration-300 bg-card rounded-2xl p-8 border border-border shadow-md">
+    <div className={`w-full max-w-lg mx-auto space-y-6 bg-card rounded-2xl p-8 border border-border shadow-md relative overflow-hidden transition-all duration-300 ${transitioning ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0 animate-slide-up'}`}>
+      {/* Reaction emoji overlay */}
+      {answered && isCorrect !== null && (
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+          <span className={`text-7xl ${isCorrect ? 'animate-emoji-correct' : 'animate-emoji-wrong'}`}>
+            {isCorrect ? '🎉' : '😬'}
+          </span>
+        </div>
+      )}
+
+      {/* Streak badge */}
+      {streak >= 2 && (
+        <div className={`absolute -top-1 -right-1 bg-primary text-primary-foreground px-3 py-1 rounded-bl-xl rounded-tr-2xl font-display text-sm font-bold ${streak >= 3 ? 'animate-pulse' : ''}`}>
+          🔥 {streak} in a row!
+        </div>
+      )}
+
       {/* Type label */}
       <div className="flex justify-center">
         <span className="text-xs uppercase tracking-widest text-accent font-display font-semibold">
@@ -83,7 +95,7 @@ const QuestionCard = ({ question, answered, selectedAnswer, isCorrect, onSubmit 
           {!answered && (
             <button
               onClick={() => { if (inputValue.trim()) { onSubmit(inputValue.trim()); setInputValue(""); } }}
-              className="w-full py-3 rounded-lg bg-primary text-primary-foreground font-display font-semibold hover:opacity-90 transition-opacity"
+              className="w-full py-3 rounded-lg bg-primary text-primary-foreground font-display font-semibold hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] transition-all"
             >
               Submit
             </button>
@@ -96,11 +108,12 @@ const QuestionCard = ({ question, answered, selectedAnswer, isCorrect, onSubmit 
         </div>
       ) : (
         <div className="grid gap-3">
-          {question.options!.map((option) => (
+          {question.options!.map((option, i) => (
             <button
               key={option}
               onClick={() => !answered && onSubmit(option)}
               disabled={answered}
+              style={{ animationDelay: `${i * 50}ms` }}
               className={`w-full text-left px-5 py-3.5 rounded-lg border-2 font-body transition-all duration-200 ${getOptionStyle(option)}`}
             >
               {option}

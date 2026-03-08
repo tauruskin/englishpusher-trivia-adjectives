@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from "react";
+import { useState, useCallback } from "react";
 import wordList, { WordEntry } from "@/data/wordList";
 
 export type QuestionType = "en-to-native" | "native-to-en" | "fill-blank";
@@ -31,7 +31,6 @@ function generateQuestions(count: number): Question[] {
       return { type, word, correctAnswer: word.word };
     }
 
-    // Generate 3 wrong options
     const others = wordList.filter((w) => w.word !== word.word);
     const wrongOnes = shuffle(others).slice(0, 3);
 
@@ -53,6 +52,8 @@ export function useGame(questionCount = 10) {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [gameOver, setGameOver] = useState(false);
+  const [streak, setStreak] = useState(0);
+  const [transitioning, setTransitioning] = useState(false);
 
   const currentQuestion = questions[currentIndex] ?? null;
 
@@ -63,18 +64,27 @@ export function useGame(questionCount = 10) {
       setSelectedAnswer(answer);
       setIsCorrect(correct);
       setAnswered(true);
-      if (correct) setScore((s) => s + 1);
+      if (correct) {
+        setScore((s) => s + 1);
+        setStreak((s) => s + 1);
+      } else {
+        setStreak(0);
+      }
 
       setTimeout(() => {
-        if (currentIndex + 1 >= questions.length) {
-          setGameOver(true);
-        } else {
-          setCurrentIndex((i) => i + 1);
-        }
-        setAnswered(false);
-        setSelectedAnswer(null);
-        setIsCorrect(null);
-      }, 1200);
+        setTransitioning(true);
+        setTimeout(() => {
+          if (currentIndex + 1 >= questions.length) {
+            setGameOver(true);
+          } else {
+            setCurrentIndex((i) => i + 1);
+          }
+          setAnswered(false);
+          setSelectedAnswer(null);
+          setIsCorrect(null);
+          setTransitioning(false);
+        }, 300);
+      }, 1000);
     },
     [answered, currentQuestion, currentIndex, questions.length]
   );
@@ -87,6 +97,8 @@ export function useGame(questionCount = 10) {
     setSelectedAnswer(null);
     setIsCorrect(null);
     setGameOver(false);
+    setStreak(0);
+    setTransitioning(false);
   }, [questionCount]);
 
   return {
@@ -98,6 +110,8 @@ export function useGame(questionCount = 10) {
     selectedAnswer,
     isCorrect,
     gameOver,
+    streak,
+    transitioning,
     submitAnswer,
     restart,
   };
