@@ -1,5 +1,5 @@
 # EnglishPusher Trivia
-
+     
 A sleek, modern vocabulary trivia game for adult English learners. Built with React, TypeScript, and Tailwind CSS.
 
 **Current topic:** Adjectives for Feelings (-ed / -ing adjectives) — English → Ukrainian
