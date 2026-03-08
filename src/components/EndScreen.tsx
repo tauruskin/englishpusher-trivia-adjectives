@@ -11,7 +11,7 @@ interface EndScreenProps {
 const EndScreen = ({ score, total, onRestart }: EndScreenProps) => {
   const pct = Math.round((score / total) * 100);
   const isPerfect = score === total;
-  const isGreat = score >= 7;
+  const isGreat = score >= 14;
 
   const emoji = isPerfect ? "🏆" : isGreat ? "🎉" : pct >= 50 ? "👍" : "💪";
   const message = isPerfect

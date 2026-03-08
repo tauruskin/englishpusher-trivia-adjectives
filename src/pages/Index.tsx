@@ -5,7 +5,7 @@ import QuestionCard from "@/components/QuestionCard";
 import EndScreen from "@/components/EndScreen";
 
 const Index = () => {
-  const game = useGame(10);
+  const game = useGame(20);
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
