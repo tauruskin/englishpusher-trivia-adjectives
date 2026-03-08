@@ -87,7 +87,7 @@ const Index = () => {
             </a>
             <div>
               <h1 className="font-display text-lg font-bold text-foreground tracking-tight">
-                EnglishPusher<span className="text-primary"> Trivia</span>
+                Englishpusher<span className="text-primary"> Trivia</span>
               </h1>
               <a
                 href="https://www.englishpusher.in.ua/"
