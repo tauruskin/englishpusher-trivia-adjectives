@@ -78,7 +78,7 @@ function shuffle<T>(arr: T[]): T[] {
 }
 
 function buildSingleQuestion(word: WordEntry, type: QuestionType, pool: WordEntry[]): Question {
-  if (type === "fill-blank") {
+  if (type === "type-word") {
     return { type, word, correctAnswer: word.word };
   }
 
