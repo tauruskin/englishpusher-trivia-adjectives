@@ -3,12 +3,11 @@
  * Topic: Adjectives for Feelings (-ed / -ing adjectives)
  * 
  * Edit this file to swap vocabulary for different lessons.
- * Each entry needs: word (English), translation (Ukrainian), example (sentence with ___ blank).
+ * Each entry needs: word (English), translation (Ukrainian).
  */
 export interface WordEntry {
   word: string;
   translation: string;
-  example: string;
 }
 
 export type EnabledQuestionType = 'multipleChoice' | 'reversed' | 'fillBlank' | 'trueOrFalse' | 'matching';
