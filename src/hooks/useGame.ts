@@ -210,11 +210,11 @@ export function useGame(customPool?: WordEntry[]) {
       }
 
       const isMatching = currentQuestion.type === "matching";
-      const isFillBlank = currentQuestion.type === "fill-blank";
+      const isTypeWord = currentQuestion.type === "type-word";
       const feedbackDelay = isMatching
         ? 300
-        : isFillBlank
-          ? correct ? 2000 : 4000
+        : isTypeWord
+          ? correct ? 2000 : 3000
           : 1000;
 
       setTimeout(() => {
