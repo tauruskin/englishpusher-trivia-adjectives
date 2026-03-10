@@ -41,8 +41,11 @@ const QuestionCard = ({ question, answered, selectedAnswer, isCorrect, streak, t
       case "en-to-native": return question.word.word;
       case "native-to-en": return question.word.translation;
       case "type-word": return question.word.translation;
+      case "sentence-completion": return null; // sentence is shown instead
     }
   };
+
+  const isSentenceCompletion = question.type === "sentence-completion";
 
   const getOptionStyle = (option: string) => {
     if (!answered) return "bg-secondary hover:bg-muted border-border hover:border-primary/50 text-foreground hover:scale-[1.02] active:scale-[0.98]";
