@@ -93,6 +93,13 @@ function buildSingleQuestion(word: WordEntry, type: QuestionType, pool: WordEntr
     return { type, word, correctAnswer: isTrue ? "true" : "false", shownTranslation };
   }
 
+  if (type === "sentence-completion") {
+    const others = pool.filter((w) => w.word !== word.word);
+    const wrongOnes = shuffle(others).slice(0, 3);
+    const options = shuffle([word.word, ...wrongOnes.map((w) => w.word)]);
+    return { type, word, options, correctAnswer: word.word, sentence: word.example };
+  }
+
   const others = pool.filter((w) => w.word !== word.word);
   const wrongOnes = shuffle(others).slice(0, 3);
 
