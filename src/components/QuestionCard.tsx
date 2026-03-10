@@ -68,8 +68,8 @@ const QuestionCard = ({ question, answered, selectedAnswer, isCorrect, streak, t
 
   const characterPose: CharacterPose = !answered ? "thinking" : isCorrect ? "happy" : "sad";
 
-  // Determine if we should show the speaker next to the English word
   const showSpeakerInline = question.type === "en-to-native";
+  const showSpeakerForAnswer = question.type === "native-to-en" || question.type === "type-word";
 
   return (
     <div className="flex items-center gap-6 w-full">
