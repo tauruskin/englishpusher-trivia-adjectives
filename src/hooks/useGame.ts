@@ -126,7 +126,7 @@ function generateQuestions(pool: WordEntry[]): Question[] {
   let i = 0;
 
   while (i < shuffled.length) {
-    if (matchingEnabled && shuffled.length - i >= 5 && Math.random() < 0.2) {
+    if (matchingEnabled && shuffled.length - i >= 5 && Math.random() < 0.1) {
       const matchWords = shuffled.slice(i, i + 5);
       questions.push({
         type: "matching",
