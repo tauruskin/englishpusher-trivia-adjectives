@@ -114,56 +114,30 @@ function buildSingleQuestion(word: WordEntry, type: QuestionType, pool: WordEntr
 
 function generateQuestions(pool: WordEntry[]): Question[] {
   const shuffled = shuffle(pool);
-  const total = shuffled.length;
   const questions: Question[] = [];
-  let i = 0;
 
-  while (i < shuffled.length) {
-    const progress = i / total;
-    
-    // First 20%: matching
-    if (progress < 0.2) {
-      if (shuffled.length - i >= 5) {
-        const matchWords = shuffled.slice(i, i + 5);
-        questions.push({
-          type: "matching",
-          word: matchWords[0],
-          words: matchWords,
-          correctAnswer: "matched",
-        });
-        i += 5;
-      } else {
-        // Not enough words for matching, fall back to multiple choice
-        questions.push(buildSingleQuestion(shuffled[i], "en-to-native", pool));
-        i++;
-      }
-    }
-    // 20-40%: multiple choice
-    else if (progress < 0.4) {
-      questions.push(buildSingleQuestion(shuffled[i], "en-to-native", pool));
-      i++;
-    }
-    // 40-60%: true or false
-    else if (progress < 0.6) {
-      questions.push(buildSingleQuestion(shuffled[i], "true-false", pool));
-      i++;
-    }
-    // 60-80%: type the word
-    else if (progress < 0.8) {
-      questions.push(buildSingleQuestion(shuffled[i], "type-word", pool));
-      i++;
-    }
-    // Last 20%: complete the sentence
-    else {
-      const word = shuffled[i];
-      if (word.example) {
-        questions.push(buildSingleQuestion(word, "sentence-completion", pool));
-      } else {
-        questions.push(buildSingleQuestion(word, "en-to-native", pool));
-      }
-      i++;
-    }
-  }
+  // Take first 5 words for matching
+  const matchWords = shuffled.slice(0, 5);
+  questions.push({
+    type: "matching",
+    word: matchWords[0],
+    words: matchWords,
+    correctAnswer: "matched",
+  });
+
+  // Remaining words divided into 4 equal zones
+  const remaining = shuffled.slice(5);
+  const zoneSize = Math.ceil(remaining.length / 4);
+
+  remaining.forEach((word, idx) => {
+    const zone = Math.floor(idx / zoneSize);
+    let type: QuestionType;
+    if (zone === 0) type = "en-to-native";
+    else if (zone === 1) type = "true-false";
+    else if (zone === 2) type = "type-word";
+    else type = word.example ? "sentence-completion" : "en-to-native";
+    questions.push(buildSingleQuestion(word, type, pool));
+  });
 
   return questions;
 }
