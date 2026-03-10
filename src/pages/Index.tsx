@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useGame } from "@/hooks/useGame";
 import { useTTS } from "@/hooks/useTTS";
 import { WordEntry } from "@/data/wordList";
+import topics, { Topic } from "@/data/topics";
 import ProgressBar from "@/components/ProgressBar";
 import ScoreBadge from "@/components/ScoreBadge";
 import QuestionCard from "@/components/QuestionCard";
@@ -10,9 +11,30 @@ import MatchingCard from "@/components/MatchingCard";
 import EndScreen from "@/components/EndScreen";
 
 const Index = () => {
-  const [customPool, setCustomPool] = useState<WordEntry[] | undefined>();
+  const [selectedTopic, setSelectedTopic] = useState<Topic>(topics[0]);
+  const [customPool, setCustomPool] = useState<WordEntry[] | undefined>(topics[0].wordList);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const game = useGame(customPool);
   const tts = useTTS();
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  const handleSelectTopic = (topic: Topic) => {
+    setSelectedTopic(topic);
+    setCustomPool(topic.wordList);
+    game.restart(topic.wordList);
+    setDropdownOpen(false);
+  };
 
   const handlePracticeWeak = (words: WordEntry[]) => {
     setCustomPool(words);
@@ -20,8 +42,8 @@ const Index = () => {
   };
 
   const handlePlayAgain = () => {
-    setCustomPool(undefined);
-    game.restart();
+    setCustomPool(selectedTopic.wordList);
+    game.restart(selectedTopic.wordList);
   };
 
   const renderQuestion = () => {
