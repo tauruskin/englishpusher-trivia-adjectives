@@ -236,7 +236,7 @@ export function useGame(customPool?: WordEntry[]) {
         : isTypeWord
           ? correct ? 2000 : 3000
           : isSentenceCompletion
-            ? correct ? 1000 : 2000
+            ? correct ? 2000 : 4000
             : 1000;
 
       setTimeout(() => {
