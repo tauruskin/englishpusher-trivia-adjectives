@@ -59,6 +59,7 @@ const configToType: Record<string, QuestionType> = {
   typeTheWord: "type-word",
   trueOrFalse: "true-false",
   matching: "matching",
+  sentenceCompletion: "sentence-completion",
 };
 
 export const questionTypeLabel: Record<QuestionType, string> = {
