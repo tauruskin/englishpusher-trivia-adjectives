@@ -26,6 +26,7 @@ export const enabledQuestionTypes: EnabledQuestionType[] = [
   'typeTheWord',
   'trueOrFalse',
   'matching',
+  'sentenceCompletion',
 ];
 
 import adjectives from "./topics/adjectives";
