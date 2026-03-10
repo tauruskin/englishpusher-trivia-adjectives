@@ -68,6 +68,7 @@ export const questionTypeLabel: Record<QuestionType, string> = {
   "type-word": "Type the word",
   "true-false": "True or False",
   "matching": "Match the pair",
+  "sentence-completion": "Complete the sentence",
 };
 
 function shuffle<T>(arr: T[]): T[] {
