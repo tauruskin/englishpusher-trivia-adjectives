@@ -117,6 +117,10 @@ function generateQuestions(pool: WordEntry[]): Question[] {
   const singleTypes = enabledTypes.filter((t) => t !== "matching");
   const matchingEnabled = enabledTypes.includes("matching");
 
+  // Sentence-completion only works for words that have an example field
+  const sentenceCompletionEnabled = singleTypes.includes("sentence-completion");
+  const singleTypesNoSentence = singleTypes.filter((t) => t !== "sentence-completion");
+
   const shuffled = shuffle(pool);
   const questions: Question[] = [];
   let i = 0;
@@ -133,9 +137,14 @@ function generateQuestions(pool: WordEntry[]): Question[] {
       i += 5;
     } else {
       const word = shuffled[i];
+      // Allow sentence-completion only if the word has an example
+      const availableTypes =
+        sentenceCompletionEnabled && word.example
+          ? singleTypes
+          : singleTypesNoSentence;
       const type =
-        singleTypes.length > 0
-          ? singleTypes[Math.floor(Math.random() * singleTypes.length)]
+        availableTypes.length > 0
+          ? availableTypes[Math.floor(Math.random() * availableTypes.length)]
           : "en-to-native";
       questions.push(buildSingleQuestion(word, type, pool.length >= 4 ? pool : wordList));
       i++;
