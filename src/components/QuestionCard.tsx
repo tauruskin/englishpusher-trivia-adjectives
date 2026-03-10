@@ -94,7 +94,7 @@ const QuestionCard = ({ question, answered, selectedAnswer, isCorrect, streak, t
       {/* Type label */}
       <div className="flex justify-center">
         <span className="text-xs uppercase tracking-widest text-accent font-display font-semibold">
-          {question.type === "type-word" ? "Type the Word" : "Multiple Choice"}
+          {isSentenceCompletion ? "Complete the Sentence" : question.type === "type-word" ? "Type the Word" : "Multiple Choice"}
         </span>
       </div>
 
