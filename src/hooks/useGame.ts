@@ -125,7 +125,21 @@ export function useGame(pool: WordEntry[]) {
   const [transitioning, setTransitioning] = useState(false);
   const [results, setResults] = useState<AnswerResult[]>([]);
   const [gameId, setGameId] = useState(0);
-
+  
+  useEffect(() => {
+    if (customPool) {
+      setQuestions(generateQuestions(customPool));
+      setCurrentIndex(0);
+      setScore(0);
+      setAnswered(false);
+      setSelectedAnswer(null);
+      setIsCorrect(null);
+      setGameOver(false);
+      setStreak(0);
+      setTransitioning(false);
+      setResults([]);
+    }
+  }, [customPool]);
   const currentQuestion = questions[currentIndex] ?? null;
 
   // Save progress whenever relevant state changes
