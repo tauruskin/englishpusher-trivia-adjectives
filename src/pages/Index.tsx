@@ -11,7 +11,12 @@ import MatchingCard from "@/components/MatchingCard";
 import EndScreen from "@/components/EndScreen";
 
 const Index = () => {
-  const [selectedTopic, setSelectedTopic] = useState<Topic>(topics[0]);
+  const getInitialTopic = () => {
+    const params = new URLSearchParams(window.location.search);
+    const topicId = params.get("topic");
+    return topics.find((t) => t.id === topicId) ?? topics[0];
+  };
+const [selectedTopic, setSelectedTopic] = useState<Topic>(getInitialTopic);
   const [customPool, setCustomPool] = useState<WordEntry[]>(topics[0].wordList);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
