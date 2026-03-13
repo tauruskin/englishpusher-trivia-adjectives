@@ -169,7 +169,7 @@ const Index = () => {
       </header>
 
       <main className="flex-1 flex items-center justify-center px-6 py-10">
-        <div className="w-full max-w-2xl space-y-8">
+        <div key={selectedTopic.id} className="w-full max-w-2xl space-y-8">
           {game.gameOver ? (
             <EndScreen
               score={game.score}
