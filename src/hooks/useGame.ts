@@ -202,6 +202,7 @@ export function useGame(pool: WordEntry[]) {
     setStreak(0);
     setTransitioning(false);
     setResults([]);
+    setGameId((id) => id + 1);
   }, [pool]);
 
   return {
