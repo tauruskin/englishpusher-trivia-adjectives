@@ -128,13 +128,6 @@ export function useGame(pool: WordEntry[]) {
   const currentQuestion = questions[currentIndex] ?? null;
 
   // Save progress whenever relevant state changes
-  useEffect(() => {
-    if (gameOver) {
-      clearProgress();
-    } else if (questions.length > 0) {
-      saveProgress({ questions, currentIndex, score, streak, results });
-    }
-  }, [questions, currentIndex, score, streak, results, gameOver]);
 
   const submitAnswer = useCallback(
     (answer: string) => {
