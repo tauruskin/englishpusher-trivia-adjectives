@@ -37,6 +37,7 @@ const [selectedTopic, setSelectedTopic] = useState<Topic>(getInitialTopic);
   const handleSelectTopic = (topic: Topic) => {
       setSelectedTopic(topic);
       setDropdownOpen(false);
+      window.history.pushState({}, "", `?topic=${topic.id}`);
     };
 
   const handlePracticeWeak = (words: WordEntry[]) => {
