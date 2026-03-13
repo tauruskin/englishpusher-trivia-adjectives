@@ -157,10 +157,7 @@ export function useGame(pool: WordEntry[]) {
   const [gameOver, setGameOver] = useState(false);
   const [streak, setStreak] = useState(0);
   const [transitioning, setTransitioning] = useState(false);
-  const [results, setResults] = useState<AnswerResult[]>(() => {
-    if (!customPool) { const s = loadProgress(); if (s) return s.results; }
-    return [];
-  });
+  const [results, setResults] = useState<AnswerResult[]>([]);
 
   const currentQuestion = questions[currentIndex] ?? null;
 
