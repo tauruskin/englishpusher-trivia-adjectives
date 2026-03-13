@@ -124,6 +124,7 @@ export function useGame(pool: WordEntry[]) {
   const [streak, setStreak] = useState(0);
   const [transitioning, setTransitioning] = useState(false);
   const [results, setResults] = useState<AnswerResult[]>([]);
+  const [gameId, setGameId] = useState(0);
 
   const currentQuestion = questions[currentIndex] ?? null;
 
