@@ -190,7 +190,6 @@ export function useGame(pool: WordEntry[]) {
   );
 
   const restart = useCallback((newPool?: WordEntry[]) => {
-    clearProgress();
     const p = newPool ?? pool;
     setQuestions(generateQuestions(p));
     setCurrentIndex(0);
