@@ -30,11 +30,9 @@ const Index = () => {
   }, []);
 
   const handleSelectTopic = (topic: Topic) => {
-    setSelectedTopic(topic);
-    setCustomPool(topic.wordList);
-    game.restart(topic.wordList);
-    setDropdownOpen(false);
-  };
+      setSelectedTopic(topic);
+      setDropdownOpen(false);
+    };
 
   const handlePracticeWeak = (words: WordEntry[]) => {
     setCustomPool(words);
