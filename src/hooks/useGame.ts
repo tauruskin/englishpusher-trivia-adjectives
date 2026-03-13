@@ -217,6 +217,7 @@ export function useGame(pool: WordEntry[]) {
     streak,
     transitioning,
     results,
+    gameId,
     submitAnswer,
     restart,
   };
