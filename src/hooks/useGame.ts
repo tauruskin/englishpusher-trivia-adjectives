@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
-import wordList, { WordEntry, enabledQuestionTypes } from "@/data/wordList";
+import { WordEntry } from "@/data/wordList";
 
 const STORAGE_KEY = "englishpusher-game-progress-v3";
 
