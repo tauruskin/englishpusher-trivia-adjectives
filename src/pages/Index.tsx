@@ -15,7 +15,7 @@ const Index = () => {
   const [customPool, setCustomPool] = useState<WordEntry[]>(topics[0].wordList);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const game = useGame(customPool);
+  const game = useGame(selectedTopic.wordList, selectedTopic.id);
   const tts = useTTS();
 
   // Close dropdown on outside click
