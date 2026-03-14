@@ -1,0 +1,28 @@
+import { WordEntry } from "@/data/wordList";
+
+const jobs: WordEntry[] = [
+  { word: "musician", translation: "музикант", example: "A ___ practises for many hours every day to perfect their skills." },
+  { word: "mechanic", translation: "механік", example: "The ___ fixed the engine and had the car ready by lunchtime." },
+  { word: "shop assistant", translation: "продавець", example: "The ___ helped me find the right size and colour of jacket." },
+  { word: "financial consultant", translation: "фінансовий консультант", example: "A ___ helped our family plan how to save money for the future." },
+  { word: "plumber", translation: "сантехнік", example: "We called a ___ because the kitchen sink was completely blocked." },
+  { word: "chef", translation: "шеф-кухар", example: "The ___ prepared a magnificent three-course meal for the guests." },
+  { word: "gardener", translation: "садівник", example: "The ___ planted beautiful roses along the front of the house." },
+  { word: "journalist", translation: "журналіст", example: "The ___ interviewed the mayor about the new city transport plan." },
+  { word: "be responsible for", translation: "бути відповідальним за", example: "A manager must ___ the work and progress of their entire team." },
+  { word: "earn a good salary", translation: "заробляти хорошу зарплату", example: "Doctors and lawyers usually ___ because of their specialist skills." },
+  { word: "work with numbers", translation: "працювати з цифрами", example: "Accountants ___ every single day as part of their main duties." },
+  { word: "make decisions", translation: "приймати рішення", example: "A good leader must ___ quickly and confidently under pressure." },
+  { word: "give advice", translation: "давати пораду", example: "A financial consultant is paid to ___ about how to invest money." },
+  { word: "know all about water pipes", translation: "знати все про водопровідні труби", example: "A plumber must ___ to fix leaks and install heating systems." },
+  { word: "inform people", translation: "інформувати людей", example: "A journalist's main job is to ___ about important current events." },
+  { word: "sell a service", translation: "продавати послугу", example: "A shop assistant's job is to ___ or product to every customer." },
+  { word: "prepare food", translation: "готувати їжу", example: "A chef's main responsibility is to ___ for all the restaurant guests." },
+  { word: "play in a band", translation: "грати у музичній групі", example: "A musician often has to ___ at weddings, concerts and festivals." },
+  { word: "serve customers", translation: "обслуговувати клієнтів", example: "A shop assistant must ___ politely and helpfully at all times." },
+  { word: "repair cars", translation: "ремонтувати машини", example: "A mechanic's job is to ___ and make sure they are safe to drive." },
+  { word: "grow fruit and vegetables", translation: "вирощувати фрукти та овочі", example: "A gardener can ___ as well as look after flowers and lawns." },
+  { word: "provide natural food", translation: "забезпечувати натуральною їжею", example: "A gardener who grows organic produce can ___ for local families." },
+];
+
+export default jobs;
