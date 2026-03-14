@@ -4,6 +4,7 @@ import stativeVerbs from "./stative-verbs";
 import personalityAdjectives from "./personality-adjectives";
 import adverbsOfFrequency from "./adverbs-of-frequency";
 import jobs from "./jobs";
+import personalityAdjectivesOpposites from "./personality-adjectives-opposites";
 
 export interface Topic {
   id: string;
@@ -17,6 +18,7 @@ const topics: Topic[] = [
   { id: "personality-adjectives", name: "Personality Adjectives", wordList: personalityAdjectives },
   { id: "adverbs-of-frequency", name: "Adverbs of Frequency", wordList: adverbsOfFrequency },
   { id: "jobs", name: "Jobs", wordList: jobs },
+  { id: "personality-adjectives-opposites", name: "Personality Adjectives: Opposites", wordList: personalityAdjectivesOpposites },
 ];
 
 export default topics;
